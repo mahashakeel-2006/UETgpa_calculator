@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu & Timers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- JavaScript Auto-Refresh: Keeps countdown ticking WITHOUT breaking form fields -->
+    <script>
+        setInterval(function() {
+            // Only reload if the user isn't actively typing in an input field right now
+            if (document.activeElement.tagName !== 'INPUT') {
+                window.location.reload();
+            }
+        }, 1000);
+    </script>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Top Header Section -->
+        <div class="header">
+            <h1>Our Menu</h1>
+            <span class="cart-badge">Cart Items: {{ cart_count }}</span>
+        </div>
+        
+        <!-- Interactive Menu Ordering Selection Form -->
+        <form action="/add" method="POST">
+            {% for category, items in menu.items() %}
+            <div class="category">
+                <h2 class="category-title">{{ category }}</h2>
+                
+                {% for item in items %}
+                <div class="menu-item">
+                    <span class="item-name">{{ item.name }}</span>
+                    <span class="item-price">Rs {{ "%.2f"|format(item.price) }}</span>
+                    
+                    <div class="qty-wrapper" style="display: flex; align-items: center; gap: 8px;">
+                        <label style="color: #2F1B14; font-size: 0.95em;">Qty:</label>
+                        <input type="number" name="qty_{{ item.name }}" value="0" min="0" class="qty-input">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <!-- Bottom Submission Control Area -->
+            <div class="controls">
+                <button type="submit" class="btn-main">Add Selection to Cart & View Split</button>
+            </div>
+        </form>
+
+        <!-- Cream & Sunset Coral Themed Kitchen Prep Timers -->
+        <section class="kitchen-timers">
+            <h2 class="timers-section-title">Kitchen Prep Timers</h2>
+
+            <div class="timers-container">
+                {% for t in timers %}
+                    {% set end = t['end_time'] | as_datetime %}
+                    {% set diff = end - now %}
+                    
+                    <!-- Base container checks if countdown hit zero -->
+                    <div class="timer-box {% if diff.total_seconds() <= 0 %}done{% endif %}">
+                        <span class="timer-label">🍳 {{ t['dish'] }}</span>
+                        
+                        {% if diff.total_seconds() <= 0 %}
+                            <!-- Ready State with Ocean Teal Styling -->
+                            <span class="timer-display" style="color: #2A9D8F;">Ready!</span>
+                        {% else %}
+                            <!-- Live Running Countdown Timer State -->
+                            <span class="timer-display">
+                                {{ (diff.seconds // 60) | int }}:{{ "%02d" | format(diff.seconds % 60) }}
+                            </span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                <!-- Fallback view when no orders are currently running -->
+                {% if not timers %}
+                    <p class="empty" style="text-align: center; color: #8B5A2B; font-style: italic; margin: 15px 0 0 0;">
+                        No active timers running right now.
+                    </p>
+                {% endif %}
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>

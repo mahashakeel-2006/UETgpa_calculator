@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart & Bill</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Your Cart & Bill</h1>
+        </div>
+        
+        <a href="/" style="color: #8B5A2B; text-decoration: none; font-weight: bold; margin-bottom: 20px; display: block;">⬅ Back to Menu</a>
+        
+        {% if cart_details %}
+            <div class="category">
+                {% for item in cart_details %}
+                <div class="menu-item">
+                    <span class="item-name">{{ item.name }}</span>
+                    <span class="item-price">Rs {{ "%.2f"|format(item.price) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <h2 style="text-align: right; color: #E76F51; margin-bottom: 20px;">Total: Rs {{ "%.2f"|format(total) }}</h2>
+
+            <form method="POST" class="controls">
+                <label style="font-weight: bold; color: #2F1B14; font-size: 1.1em;">Divide Bill among People:</label>
+                <input type="number" name="people" value="{{ people }}" min="1">
+                <button type="submit">Calculate Split</button>
+            </form>
+            
+            {% if split != total %}
+                <div style="text-align: center; margin-top: 20px; padding: 15px; background: #FCF6F1; border-radius: 10px; border-left: 6px solid #2A9D8F; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
+                    <h3 style="color: #2F1B14;">Amount per person: <span style="color: #2A9D8F;">Rs {{ "%.2f"|format(split) }}</span></h3>
+                </div>
+            {% endif %}
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="/checkout" style="background: #2A9D8F; color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 1.2em; box-shadow: 0 4px 15px rgba(42, 157, 143, 0.3);">Confirm & Place Order</a>
+            </div>
+            
+        {% else %}
+            <p style="text-align: center; font-size: 1.2em; color: #8B5A2B;">Your cart is empty.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

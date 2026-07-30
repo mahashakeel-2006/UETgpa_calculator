@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5">
+    <title>Customer Tracker</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; background-color: #FFFDD0; margin: 0; padding: 40px 20px; color: #4B3621; }
+        .header h1 { margin-bottom: 20px; color: #3E2723; }
+        .board { background: #FFFFFF; max-width: 500px; margin: 40px auto; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(93, 64, 55, 0.15); border: 1px solid #EADDCA; }
+        .token-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 10px; border-bottom: 1px solid #F5F5DC; font-size: 1.1em; }
+        .btn-order { background-color: #5D4037; color: #FFFDD0; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Smart Restaurant Board</h1>
+        <a href="/" class="btn-order">Back to Menu</a>
+        <p style="color: #A0522D; font-size: 0.9em; margin-top: 10px;">(Page automatically updates live)</p>
+    </div>
+
+    <div class="board">
+        <h2 style="margin-top: 0;">Live Tracker (Customer)</h2>
+        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
+
+        {% if not orders %}
+            <p style="color: #A08679; font-style: italic;">No active orders right now.</p>
+        {% endif %}
+
+        {% for token, status in orders.items() %}
+        <div class="token-row">
+            <span>Token: <strong>#{{ token }}</strong></span>
+            
+            {% if "Pending" in status %}
+                <span style="color: #c0392b; font-weight: bold;">{{ status }}</span>
+            {% elif "Preparation" in status %}
+                <span style="color: #e67e22; font-weight: bold;">{{ status }}</span>
+            {% elif "Delivery" in status %}
+                <span style="color: #2980b9; font-weight: bold;">{{ status }}</span>
+            {% else %}
+                <span style="color: #27ae60; font-weight: bold;">{{ status }}</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

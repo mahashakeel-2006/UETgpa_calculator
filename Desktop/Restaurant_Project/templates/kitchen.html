@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5">
+    <title>Kitchen Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; background-color: #2c3e50; margin: 0; padding: 40px 20px; color: white; }
+        .header h1 { margin-bottom: 20px; color: #ecf0f1; }
+        .board { background: #34495e; max-width: 600px; margin: 40px auto; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .token-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 10px; border-bottom: 1px solid #7f8c8d; }
+        .admin-link { font-size: 0.9em; color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; font-weight: bold;}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👨‍🍳 Kitchen Dashboard</h1>
+        <p style="color: #95a5a6; font-size: 0.9em;">(Page auto-refreshes every 5 seconds for live orders)</p>
+    </div>
+
+    <div class="board">
+        <h2 style="margin-top: 0;">Manage Active Orders</h2>
+        <hr style="border: 0; border-top: 1px solid #7f8c8d; margin-bottom: 20px;">
+
+        {% if not orders %}
+            <p style="color: #bdc3c7; font-style: italic;">No orders right now.</p>
+        {% endif %}
+
+        {% for token, status in orders.items() %}
+        <div class="token-row">
+            <span style="font-size: 1.2em;">Token: <strong>#{{ token }}</strong></span>
+            
+            <span>{{ status }}</span>
+
+            {% if "Pending" in status %}
+                <a href="/update/{{ token }}" class="admin-link" style="background-color: #e74c3c;">Start Cooking</a>
+            {% elif "Preparation" in status %}
+                <a href="/update/{{ token }}" class="admin-link" style="background-color: #f39c12;">Send for Delivery</a>
+            {% elif "Delivery" in status %}
+                <a href="/update/{{ token }}" class="admin-link" style="background-color: #2980b9;">Mark Delivered</a>
+            {% else %}
+                <a href="/update/{{ token }}" class="admin-link" style="background-color: #27ae60;">Clear Order</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

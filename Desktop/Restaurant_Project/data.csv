@@ -1,0 +1,23 @@
+Category,Item,Price,CookTime
+Fastfood,Burger,440.00,12
+Fastfood,Pizza,445.50,15
+Fastfood,ChowMein,45.50,10
+Fastfood,Pasta,49.00,10
+Beverages,Mocha,49.00,3
+Beverages,Coffee,25.00,2
+Beverages,Latte,25.00,2
+Beverages,Cappuncino,15.00,3
+Mocktails,Mint Magarita,45.00,4
+Mocktails,Lemon mojito,13.00,3
+Mocktails,Pina collada,13.00,4
+Mocktails,Peache iced tea,13.00,3
+seafood,Prawns,13.00,8
+seafood,Fried Fish,13.00,12
+seafood,Buttered Shrimps,78.00,10
+seafood,Salted Salmon,78.00,15
+Desi khana,Chicken Karahi,150.00,25
+Desi khana,Chicken Tikka,130.00,20
+Desi khana,Chicken Malai boti,130.00,18
+Desi khana,Muttan Pulao,150.00,30
+
+

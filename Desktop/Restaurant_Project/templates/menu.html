@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Our Menu</h1>
+            <a href="/cart" style="color: #FCF6F1; text-decoration: none; font-weight: bold; background: #2A9D8F; padding: 5px 15px; border-radius: 20px;">🛒 Cart ({{ cart_count }})</a>
+        </div>
+        
+        <form action="/add" method="POST">
+            {% for category, items in menu.items() %}
+            <div class="category">
+                <h2 class="category-title">{{ category }}</h2>
+                {% for item in items %}
+                <div class="menu-item">
+                    <span class="item-name" style="flex: 2;">{{ item.name }}</span>
+                    <span class="item-price" style="flex: 1; text-align: right; margin-right: 15px;">Rs {{ "%.2f"|format(item.price) }}</span>
+                    <input type="number" name="qty_{{ item.name }}" value="0" min="0" style="width: 60px; padding: 5px; border: 2px solid #8B5A2B; border-radius: 8px; text-align: center;">
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            
+            <div class="controls" style="justify-content: center;">
+                <button type="submit">Add Selected to Cart</button>
+            </div>
+        </form>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/tracker" style="color: #8B5A2B; font-weight: bold; text-decoration: none;">View Live Order Tracker ➔</a>
+        </div>
+    </div>
+</body>
+</html>
